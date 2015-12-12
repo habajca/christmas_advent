@@ -1,0 +1,19 @@
+#!/bin/zsh
+set -eu
+set -o pipefail
+
+if [[ $# -lt 2 ]]; then
+    eout "Usage: ./watch_and_run day_number input"
+    exit 1
+fi
+
+day_number=$1; shift
+input="$1"; shift
+
+
+clear; elixir day_$day_number.exs <<< "$input" && sout || eout; date
+
+fswatch -0 day_$day_number.exs | while read -d "" event; do
+    clear; elixir day_$day_number.exs <<< "$input" && sout || eout; date
+done
+
