@@ -10,10 +10,19 @@ fi
 day_number=$1; shift
 input="$1"; shift
 
+print_input()
+{
+    iout "$(cat <<< "$input")"
+}
 
-clear; elixir day_$day_number.exs <<< "$input" && sout || eout; date
+run_script()
+{
+    clear; print_input; elixir day_$day_number.exs <<< "$input" && sout || eout; date
+}
+
+run_script
 
 fswatch -0 day_$day_number.exs | while read -d "" event; do
-    clear; elixir day_$day_number.exs <<< "$input" && sout || eout; date
+    run_script
 done
 
