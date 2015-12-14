@@ -1,0 +1,6 @@
+#!/bin/zsh
+set -eu
+set -o pipefail
+
+elixir_test_updated "mix escript.build && sout && ./aoc day_$1"
+
